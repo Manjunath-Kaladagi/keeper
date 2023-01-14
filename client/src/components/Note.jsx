@@ -13,6 +13,8 @@ function Note(props) {
     if (response.ok) {
       console.log(`deleted`);
       props.load();
+    } else {
+      console.log(json.error);
     }
   }
   return (
