@@ -6,6 +6,7 @@ import Zoom from "@mui/material/Zoom";
 function CreateArea(props) {
   const [note, setNote] = useState({ title: "", content: "" });
   const [isClicked, setisClicked] = useState(false);
+  const [error, setError] = useState(null);
 
   function handleChange(e) {
     let { name, value } = e.target;
@@ -31,15 +32,18 @@ function CreateArea(props) {
     if (response.ok) {
       console.log("new note added");
       setNote({ title: "", content: "" });
+      setError(null);
       props.load();
+      setisClicked(false);
     } else {
       console.log(json.error);
+      setError(json.error);
     }
   }
 
   return (
     <div>
-      <form className="create-note">
+      <form className="create-note" onFocus={handleClick}>
         {isClicked && (
           <input
             value={note.title}
@@ -49,7 +53,6 @@ function CreateArea(props) {
           />
         )}
         <textarea
-          onClick={handleClick}
           onChange={handleChange}
           value={note.content}
           name="content"
@@ -61,6 +64,7 @@ function CreateArea(props) {
             <AddIcon />
           </Fab>
         </Zoom>
+        {error && <p className="error">{error}</p>}
       </form>
     </div>
   );

@@ -100,3 +100,6 @@ form.create-note button {
   cursor: pointer;
   outline: none;
 }
+.error {
+  border-bottom: solid #ff1919 1px;
+}
