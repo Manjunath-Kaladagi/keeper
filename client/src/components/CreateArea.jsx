@@ -3,10 +3,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { Fab } from "@mui/material";
 import Zoom from "@mui/material/Zoom";
 
-import Note from "./Note";
-
-function CreateArea() {
-  const [notes, setNotes] = useState([]);
+function CreateArea(props) {
   const [note, setNote] = useState({ title: "", content: "" });
   const [isClicked, setisClicked] = useState(false);
 
@@ -21,19 +18,23 @@ function CreateArea() {
     setisClicked(true);
   }
 
-  function add(e) {
+  async function add(e) {
     e.preventDefault();
-    setNotes((prevNotes) => {
-      return [...prevNotes, note];
+    const response = await fetch("http://localhost:8000/api/notes/", {
+      method: "post",
+      body: JSON.stringify(note),
+      headers: { "Content-Type": "application/json" },
     });
-    setNote({ title: "", content: "" });
-  }
 
-  function deleteNote(id) {
-    setNotes((prevNotes) => {
-      prevNotes.splice(id, 1);
-      return [...prevNotes];
-    });
+    const json = await response.json();
+
+    if (response.ok) {
+      console.log("new note added");
+      setNote({ title: "", content: "" });
+      props.load();
+    } else {
+      console.log(json.error);
+    }
   }
 
   return (
@@ -61,15 +62,6 @@ function CreateArea() {
           </Fab>
         </Zoom>
       </form>
-      {notes.map((note, index) => (
-        <Note
-          key={index}
-          id={index}
-          title={note.title}
-          content={note.content}
-          deleteNote={deleteNote}
-        />
-      ))}
     </div>
   );
 }
