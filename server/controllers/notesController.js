@@ -62,7 +62,7 @@ const deleteNote = async (req, res) => {
   if (!note) {
     return res.status(400).json({ error: "not found" });
   }
-  res.status(200).json(note);
+  res.status(200).json({ note: note });
 };
 
 module.exports = {
