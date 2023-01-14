@@ -33,7 +33,7 @@ const createNote = async (req, res) => {
     const note = await Note.create({ title, content });
     res.status(200).json(note);
   } catch (err) {
-    res.status(400).json({ erros: err.message });
+    res.status(400).json({ error: err.message });
   }
 };
 
